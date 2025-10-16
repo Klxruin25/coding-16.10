@@ -1,0 +1,64 @@
+
+<html>
+    <head>
+        
+        <title>Page Title</title>
+        
+    </head>
+    <body>
+           <table border="1">
+            <tr>
+                <td>Xml String:</td>
+                <td id="td_xml_string"></td>
+            </tr>
+            
+            <tr>
+                <td>Title:</td>
+                <td id="td_title"></td>
+            </tr>
+            <tr>
+                <td>Author:</td>
+                <td id="td_author"></td>
+            </tr>
+            <tr>
+                <td>Year:</td>
+                <td id="td_year"></td>
+            </tr>
+
+        </table>
+        <script type="text/javascript">
+            var xhr =new XMLHttpRequest();
+            xhr.open("GET","../datasets/books.xml",true);
+            xhr.send();
+            xhr.onreadystatechange=function()
+            {
+                if (xhr.readyState==4 && xhr.status==200)
+                {
+                    //handling when loading data successfully
+                    //nếu nó chui vào đây tức là đã tải
+                    //dữ liệu về local rồi ==> dùng BOM để truy suất
+                    //cách 1:
+                    //txt=xhr.responseText
+                    //td_xml_string.innerText=txt
+                    //var parser = new DOMParser();
+                    //var xmlDoc = parser.parserFromString(txt, "text/xml");
+
+                    //Cách 2:
+                    var xmlDoc =xhr.responseXML
+                    title=xmlDoc.getElementByTagName("title")[0].childNodes[0].nodevalue;
+                    td_title.innerText=title
+                    author=xmlDoc.getElementByTagName("author")[0].childNodes[0].nodevalue;
+                    td_author.innerText=author
+                    year=xmlDoc.getElementsByTagName("year")[0].childNodes[0].nodevalue;
+                    td_year.innerText=year
+                }
+                else
+                {
+                    //handling when data can't be loaded
+                }
+
+            }
+
+        </script>
+    </body>
+</html>
